@@ -5,15 +5,15 @@
 
 namespace Speedhack
 {
-	float speed = 1;
+	float speed = 1.0f;
 
 	typedef DWORD(WINAPI *_tGetTickCount)(void);
 	_tGetTickCount _GTC;
-	DWORD _GTC_BaseTime = 0;
+	DWORD _GTC_BaseTime;
 
 	typedef ULONGLONG(WINAPI *_tGetTickCount64)(void);
 	_tGetTickCount64 _GTC64;
-	DWORD _GTC64_BaseTime = 0;
+	DWORD _GTC64_BaseTime;
 
 	typedef BOOL(WINAPI *_tQueryPerformanceCounter)(LARGE_INTEGER*);
 	_tQueryPerformanceCounter _QPC;
@@ -36,9 +36,8 @@ namespace Speedhack
 
 	DWORD WINAPI _hQueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
 	{
-		LARGE_INTEGER li;
-		_QPC(&li);
-		lpPerformanceCount->QuadPart = _QPC_BaseTime.QuadPart + ((li.QuadPart - _QPC_BaseTime.QuadPart) * speed);
+		_QPC(lpPerformanceCount);
+		lpPerformanceCount->QuadPart = _QPC_BaseTime.QuadPart + ((lpPerformanceCount->QuadPart - _QPC_BaseTime.QuadPart) * speed);
 		return TRUE;
 	}
 
@@ -61,10 +60,7 @@ namespace Speedhack
 		_QPC(&_QPC_BaseTime);
 
 		_SE = (_tSleepEx)GetProcAddress(GetModuleHandleA("Kernel32.dll"), "SleepEx");
-	}
 
-	void Attach()
-	{
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
 
