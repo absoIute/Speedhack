@@ -71,4 +71,26 @@ namespace Speedhack
 
 		DetourTransactionCommit();
 	}
+
+	void Detach()
+	{
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+
+		DetourDetach(&(PVOID&)_GTC, _hGetTickCount);
+		DetourDetach(&(PVOID&)_GTC64, _hGetTickCount64);
+		DetourDetach(&(PVOID&)_QPC, _hQueryPerformanceCounter);
+		DetourDetach(&(PVOID&)_SE, _hSleepEx);
+
+		DetourTransactionCommit();
+	}
+
+	void SetSpeed(float relSpeed)
+	{
+		_GTC_BaseTime = _hGetTickCount();
+		_GTC64_BaseTime = _hGetTickCount64();
+		_hQueryPerformanceCounter(&_QPC_BaseTime);
+
+		speed = relSpeed;
+	}
 }

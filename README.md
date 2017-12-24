@@ -10,7 +10,7 @@ The code will __only__ have affect internally, to use on other programs, compile
 int main(int argc, char *argv[])
 {
 	Speedhack::Setup();	//call this once
-	Speedhack::speed = 0.5; //change this whenever you like
+	Speedhack::SetSpeed(0.5); //call this whenever you like
 
 	return 0;
 }

@@ -5,8 +5,7 @@
 DWORD WINAPI MainThread(LPVOID lpParam)
 {
 	Speedhack::Setup();
-
-	Speedhack::speed = 0.5; //slows down to half speed
+	Speedhack::SetSpeed(0.5); //slows down to half speed
 
 	return 0;
 }
