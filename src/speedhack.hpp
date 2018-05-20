@@ -36,8 +36,9 @@ namespace Speedhack
 
 	DWORD WINAPI _hQueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
 	{
-		_QPC(lpPerformanceCount);
-		lpPerformanceCount->QuadPart = _QPC_BaseTime.QuadPart + ((lpPerformanceCount->QuadPart - _QPC_BaseTime.QuadPart) * speed);
+		LARGE_INTEGER x;
+		_QPC(&x);
+		lpPerformanceCount->QuadPart = _QPC_BaseTime.QuadPart + ((x.QuadPart - _QPC_BaseTime.QuadPart) * speed);
 		return TRUE;
 	}
 
